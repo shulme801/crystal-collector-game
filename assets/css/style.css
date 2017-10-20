@@ -59,6 +59,10 @@ body {
   font-weight: 500;
 }
 
+.leftJustify {
+  padding-left: 0;
+}
+
 
 #myJumbotron {
   background-color: #faebd7;
@@ -90,4 +94,8 @@ body {
 #winsBox {
   margin-bottom: 2px;
 }
+
+
+
+
 
