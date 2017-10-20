@@ -1,20 +1,21 @@
 $(document).ready(function(){
 
 
-
 var timer = 5;
 
 var intervalId;
 
 function delayRestart() {
-    // Borrowing code from the interval example from 19 Oct class
+    // Borrowing code from the interval example from 19 Oct class.
+    // We'll count down 5 secs until we restart game.
       intervalId = setInterval(countDown, 1000);
 }
 
 function countDown() {
 
-    $("#userScore").text("You " + crystalGame.stateOfPlay + " -- Game will restart in " + timer + " seconds");
     timer--;
+
+    $("#userScore").text("You " + crystalGame.stateOfPlay + " -- Game will restart in " + timer + " seconds");
 
     if (timer === 0) {
        crystalGame.stateOfPlay = "continue";
@@ -25,7 +26,6 @@ function countDown() {
 }
 
     
-
 // The crystalGame Object, with its properties and methods
 
 	var crystalGame = {
@@ -41,10 +41,7 @@ function countDown() {
 		upperLimitGame:       120,
         lowerLimitCrystal:      1,
         upperLimitCrystal:     12,
-        intervalID:             0,
         stateOfPlay:    "continue",
-
-        
 
         getRandomInteger: function(lowerLimit,upperLimit){
         	return Math.floor(Math.random()*(upperLimit-lowerLimit+1)+lowerLimit);
@@ -52,22 +49,29 @@ function countDown() {
 
         resetGame: function() {
             this.userScore = 0;
+
+            // Init the targetScore to a pseudo-random number in the prescribed range
             this.targetScore = this.getRandomInteger(this.lowerLimitGame,this.upperLimitGame);
-            console.log("targetScore is "+this.targetScore);
+           
+            // Initialize the gems' values to pseudo-random numbers in the prescribed range
             this.amethystVal = this.getRandomInteger(this.lowerLimitCrystal,this.upperLimitCrystal);
             this.emeraldVal = this.getRandomInteger(this.lowerLimitCrystal,this.upperLimitCrystal);
             this.rubyVal = this.getRandomInteger(this.lowerLimitCrystal,this.upperLimitCrystal);
             this.sapphireVal = this.getRandomInteger(this.lowerLimitCrystal,this.upperLimitCrystal);
-            console.log("amethyst value is "+this.amethystVal);
-            console.log("emerald value is "+this.emeraldVal);
-            console.log("ruby value is "+this.rubyVal);
-            console.log("sapphire value is "+this.sapphireVal);
+
+            // And put the initial values up on the display
             $("#num2Guess").text(this.targetScore);
             $("#userScore").text("0");
         },
 
         startGame: function() {
+            // First, get initial values for userScore, targetScore and the gems' values
         	this.resetGame();
+
+            this.userWins   = 0;
+            this.userLosses = 0; 
+
+            // Display the initial values
         	$("#numWins").text("Wins: 0");
         	$("#numLosses").text("Losses: 0");
         	$("#num2Guess").text(this.targetScore);
@@ -129,13 +133,13 @@ function countDown() {
                 break;
         }
         $('#userScore').text(crystalGame.userScore);
-        // find out whether user won or lost and restart game if necessary
+
+        // find out whether user won or lost
         crystalGame.processStateOfPlay();
         
       });
 
     //Start the game
 	crystalGame.startGame();
-
 
 });
