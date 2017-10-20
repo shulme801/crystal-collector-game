@@ -5,9 +5,13 @@ var timer = 5;
 
 var intervalId;
 
+var disableClick;
+
 function delayRestart() {
     // Borrowing code from the interval example from 19 Oct class.
     // We'll count down 5 secs until we restart game.
+    // And we'll ignore button clicks while we wait!
+      disableClick = true;
       intervalId = setInterval(countDown, 1000);
 }
 
@@ -62,6 +66,7 @@ function countDown() {
             // And put the initial values up on the display
             $("#num2Guess").text(this.targetScore);
             $("#userScore").text("0");
+            disableClick = false;
         },
 
         startGame: function() {
@@ -115,28 +120,31 @@ function countDown() {
 // It updates the score, based on which gem the user clicked, and then
 // calls the logic that determines whether user won or lost.
       $(".gemstone").on("click", function() {
-        switch ($(this).attr('value')){
-            case "amethyst":
-                crystalGame.userScore += crystalGame.amethystVal;
-                break;
-            case "emerald":
-                crystalGame.userScore += crystalGame.emeraldVal;
-                break;
-            case "ruby":
-                crystalGame.userScore += crystalGame.rubyVal;
-                break;
-            case "sapphire":
-                crystalGame.userScore += crystalGame.sapphireVal;
-                break;
-            default:
-                alert("Unknown gem!!");
-                break;
-        }
-        $('#userScore').text(crystalGame.userScore);
+        if (disableClick) {
 
-        // find out whether user won or lost
-        crystalGame.processStateOfPlay();
-        
+        } else {
+                switch ($(this).attr('value')){
+                    case "amethyst":
+                        crystalGame.userScore += crystalGame.amethystVal;
+                        break;
+                    case "emerald":
+                        crystalGame.userScore += crystalGame.emeraldVal;
+                        break;
+                    case "ruby":
+                        crystalGame.userScore += crystalGame.rubyVal;
+                        break;
+                    case "sapphire":
+                        crystalGame.userScore += crystalGame.sapphireVal;
+                        break;
+                    default:
+                        alert("Unknown gem!!");
+                        break;
+                }
+                $('#userScore').text(crystalGame.userScore);
+
+                // find out whether user won or lost
+                crystalGame.processStateOfPlay();
+        }
       });
 
     //Start the game
